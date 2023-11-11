@@ -1,6 +1,4 @@
-﻿<# 
-
-COMPANY: Canada Revenue Agency / Agence du Revenu du Canada
+﻿<#
 
 SCRIPT NAME: Remove smbshare
 
@@ -8,15 +6,11 @@ VERSION: 1.0
 
 AUTHOR: Alexander Harnett
 
-DATE: 2022-11-29
-
 PLATFORM: Windows OS
 
 DESCRIPTION: PowerShell script to remove a smb shares
 
 MODIFIED: 2023-01-31
-
-    REQUIRED
 
 #>
 
