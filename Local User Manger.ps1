@@ -1,10 +1,10 @@
-#Lab 7 progarm for 8202WDS
-#Log file is located in C:\logfile.txt
+#Log file is located in C:\logfile.txt (not usable in github)
 #By Alex Harnett
 
 
 $UseBuilder = "UseBuilder"
 
+# Not usable atm
 $logfile = "C:\logfile.txt"
 
 #Functions used by the script
