@@ -1,13 +1,24 @@
 #Requires -RunAsAdministrator
 #Requires -Version 4.0
 
-
-# Defined Global Variables
+# Define Global Variables
+$Global:transcriptPath = ""
+# Define Empty Global Variables
 Param (
     $user,
     $Selecteduser,
-    $Offboarduser
+    $Offboarduser,
+    [string]$Confirmation
 )
+
+function Transcribe { 
+    # Transcript for logging
+    $currentAdmin = $env:Username
+    $adminPC = $env:ComputerName
+    $date = Get-Date -f yyyy-MM-dd_hh-mm-ss
+    $transcriptFile = $transcriptPath + $currentAdmin + "_" + "$adminPC" + "_" + $date + ".txt" 
+    Start-Transcript -Path $transcriptFile -noclobber
+}
 
 Function DisableUser ($Offboarduser) {
     try{
@@ -19,7 +30,7 @@ Function DisableUser ($Offboarduser) {
 }
 
 Function RemoveGroupMemberships ($Offboarduser) {
-    #Remove memberships from group
+    # Removes user from all groups expect domain_users
     Write-Output "Removing User From Groups"
     try{
         Get-AdPrincipalGroupMembership -Identity $Offboarduser | Where-Object -Property Name -Ne -Value 'Domain Users' | Remove-AdGroupMember -Members $Offboarduser
@@ -43,7 +54,13 @@ Function ResetPassword ($Offboarduser) {
 
 Function ChangeDesc ($Offboarduser) {
     # Changes User's Description to say when they were offboarded
-    
+    $CurrentTime = Get-Date -Format " (Offboarded: dd/MM/yyyy HH:mm)"
+    try {
+        Set-ADuser -Identity $Offboarduser -Clear Description
+        Set-ADUser -Identity $Offboarduser -Description $CurrentTime
+    }catch{
+
+    }
 }
 
 Function MoveToInactiveAccounts ($Offboarduser) {
@@ -58,6 +75,23 @@ Function MoveToInactiveAccounts ($Offboarduser) {
 }
 
 # Exchange functions will go here
+Function ConnectExchange () {
+    param(
+        [Parameter(Mandatory=$false)]
+        [string]$URL="Exchange URL Here"
+    )
+    
+    # Enter Admin Credentials to access Exchange
+    $Credentials = Get-Credential -Message "Enter your Exchange admin credentials"
+
+    Try{
+        $ExOPSession = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://$URL/PowerShell/ -Authentication Kerberos -Credential $Credentials
+        Import-PSSession $ExOPSession
+    } catch {
+        Write-Host "Unable to connect to Exchange, unable to complete Exchange Offboard!"
+    }
+}
+
 
 cls
 # Main Script
