@@ -1,5 +1,5 @@
-$OUPath = "OU=Inactive Accounts,OU=ACT Learning Centre,DC=ottawa,DC=communicare,DC=int"
-$ExportPath = "C:\CDITS\RemoveFromGroups.csv"
+$OUPath = "OU"
+$ExportPath = "Path\RemoveFromGroups.csv"
 
 Get-ADUser -Filter * -SearchBase $OUpath | Select-object DistinguishedName,Name,UserPrincipalName | Export-Csv -NoType $ExportPath
 
