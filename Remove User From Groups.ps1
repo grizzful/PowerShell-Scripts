@@ -1,3 +1,8 @@
+# Add check if user is in group
+# Add logging
+# Confirm user is out of group
+# Add confirm passing
+
 $OUPath = "OU"
 $ExportPath = "Path\RemoveFromGroups.csv"
 
