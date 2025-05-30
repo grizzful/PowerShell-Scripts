@@ -7,7 +7,7 @@
 
 # Assign OU path and CVS file path to variables
 $OUPath = "" #samaccountname for path
-$ExportPath = "C:\CDITS\RemoveFromGroups.csv"
+$ExportPath = "C:\LOCATION\RemoveFromGroups.csv"
 
 # Uses the OUPath to export the users to a csv file
 Get-ADUser -Filter * -SearchBase $OUpath | Select-object DistinguishedName,Name,UserPrincipalName | Export-Csv -NoType $ExportPath
